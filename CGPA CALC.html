@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <center>
+    <title>GPA & CGPA Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgba(243, 207, 140, 0.671);
+            margin: 20px;
+        }
+        .semester {
+            margin-bottom: 20px;
+        }
+        .course {
+            margin-bottom: 10px;
+        }
+        button {
+            margin-top: 10px;
+                background-color: rgb(175, 135, 76);
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 1em;
+            }
+        
+            button:hover {
+                background-color: rgb(69, 80, 160);
+            }
+        
+    </style>
+</head>
+<body>
+
+    <h1>GPA & CGPA Calculator</h1>
+
+    <!-- Semesters -->
+    <div id="semester1" class="semester">
+        <h2>Semester 1</h2>
+        <div id="semester1Courses">
+            <div class="course">
+                <input type="text" placeholder="Course Name" class="courseName">
+                <input type="number" placeholder="Credits" class="credits" min="1" max="5">
+                <input type="text" placeholder="Grade" class="grade">
+            </div>
+        </div>
+        <button onclick="addCourse('semester1Courses')">Add Course</button>
+    </div>
+
+    <div id="semester2" class="semester">
+        <h2>Semester 2</h2>
+        <div id="semester2Courses">
+            <div class="course">
+                <input type="text" placeholder="Course Name" class="courseName">
+                <input type="number" placeholder="Credits" class="credits" min="1" max="5">
+                <input type="text" placeholder="Grade" class="grade">
+            </div>
+        </div>
+        <button onclick="addCourse('semester2Courses')">Add Course</button>
+    </div>
+
+    <div id="semester3" class="semester">
+        <h2>Semester 3</h2>
+        <div id="semester3Courses">
+            <div class="course">
+                <input type="text" placeholder="Course Name" class="courseName">
+                <input type="number" placeholder="Credits" class="credits" min="1" max="5">
+                <input type="text" placeholder="Grade" class="grade">
+            </div>
+        </div>
+        <button onclick="addCourse('semester3Courses')">Add Course</button>
+    </div>
+
+    <div id="semester4" class="semester">
+        <h2>Semester 4</h2>
+        <div id="semester4Courses">
+            <div class="course">
+                <input type="text" placeholder="Course Name" class="courseName">
+                <input type="number" placeholder="Credits" class="credits" min="1" max="5">
+                <input type="text" placeholder="Grade" class="grade">
+            </div>
+        </div>
+        <button onclick="addCourse('semester4Courses')">Add Course</button>
+    </div>
+
+    <button onclick="calculateGPA()">Calculate GPA & CGPA</button>
+
+    <h2>Results</h2>
+    <p>Semester 1 GPA: <span id="gpa1"></span></p>
+    <p>Semester 2 GPA: <span id="gpa2"></span></p>
+    <p>Semester 3 GPA: <span id="gpa3"></span></p>
+    <p>Semester 4 GPA: <span id="gpa4"></span></p>
+    <p>CGPA: <span id="cgpa"></span></p>
+
+    <script>
+        function addCourse(semesterId) {
+            const courseDiv = document.createElement("div");
+            courseDiv.classList.add("course");
+
+            courseDiv.innerHTML = `
+                <input type="text" placeholder="Course Name" class="courseName">
+                <input type="number" placeholder="Credits" class="credits" min="1" max="5">
+                <input type="text" placeholder="Grade" class="grade">
+            `;
+
+            document.getElementById(semesterId).appendChild(courseDiv);
+        }
+
+        function getGradePoint(grade) {
+            switch (grade.toUpperCase()) {
+
+                case 'O': return 10.0;
+                case 'A+': return 9.0;
+                case 'A': return 8.0;
+                case 'B+': return 7.0;
+                case 'B': return 6.0;
+                case 'C+': return 5.0;
+                case 'C': return 4.0;
+            
+
+                
+            }
+        }
+
+        function calculateGPA() {
+            const semesters = [1, 2, 3, 4, 5, 6,7, 8];  // Define semester numbers
+            let totalPoints = 0, totalCredits = 0;
+
+            semesters.forEach(semester => {
+                let semesterCourses = document.querySelectorAll(`#semester${semester} .course`);
+                let semesterPoints = 0, semesterCredits = 0;
+
+                semesterCourses.forEach(course => {
+                    const credits = parseFloat(course.querySelector(".credits").value);
+                    const grade = course.querySelector(".grade").value;
+                    const gradePoint = getGradePoint(grade);
+
+                    semesterPoints += gradePoint * credits;
+                    semesterCredits += credits;
+                });
+
+                const gpa = (semesterPoints / semesterCredits).toFixed(2);
+                document.getElementById(`gpa${semester}`).textContent = gpa;
+
+                totalPoints += semesterPoints;
+                totalCredits += semesterCredits;
+            });
+
+            const cgpa = (totalPoints / totalCredits).toFixed(2);
+            document.getElementById("cgpa").textContent = cgpa;
+        }
+    </script>
+    </center>
+</body>
+</html>
